@@ -26,7 +26,7 @@ class AppWindow(QDialog):
 			data = s.recv(1024)
 			data = str(data, encoding = "utf-8")
 			print (data)
-			s.close()
+			#s.close()
 		except Exception as e:
 			print(e)
 
