@@ -20,7 +20,7 @@ class ServerTask (threading.Thread):
 	def run(self):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.bind((self.ip, self.port))
-		s.listen(5)
+		s.listen(1)
 		while True:
 			if not self.status:
 				break
@@ -35,6 +35,8 @@ class ServerTask (threading.Thread):
 				data = str(data, encoding = "utf-8")
 				self.AddSong(data)
 				conn.send(bytes("Success！", encoding = "utf8"))
+		s.shutdown(2)
+		s.close()
 		
 	def stop(self):
 		self.status = False
@@ -70,8 +72,10 @@ class MP(threading.Thread):
 					self.player.set_media(Media)
 					self.player.play()
 					time.sleep(5)
+		urllist.clear()
 
 	def stop(self):
+		self.player.stop()
 		self.status = False
 			
 		
