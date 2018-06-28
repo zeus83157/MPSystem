@@ -69,6 +69,7 @@ class MP(threading.Thread):
 					Media.get_mrl()
 					self.player.set_media(Media)
 					self.player.play()
+					time.sleep(5)
 
 	def stop(self):
 		self.status = False
