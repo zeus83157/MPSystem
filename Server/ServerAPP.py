@@ -8,8 +8,6 @@ import pafy
 import vlc
 import time
 import datetime
-import ipaddress
-import sys
 
 global urllist
 urllist = []
