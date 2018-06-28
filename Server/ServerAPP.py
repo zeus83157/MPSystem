@@ -1,11 +1,15 @@
 import sys
 from PyQt5.QtWidgets import QDialog, QApplication
+from PyQt5 import QtGui
 from ServerUI import Ui_Form
 import socket
 import threading
 import pafy
 import vlc
 import time
+import datetime
+import ipaddress
+import sys
 
 global urllist
 urllist = []
@@ -105,15 +109,33 @@ class AppWindow(QDialog):
 	def StartButton_Clicked(self):
 		ip = self.ui.IPlineEdit.text()
 		port = self.ui.PortlineEdit.text()
-		port = int(port)
-		self.stask = ServerTask(ip,port)
-		self.stask.start()
-		self.mp = MP()
-		self.mp.start()
+
+		if port.isdigit():
+			self.ui.StopButton.setEnabled(True)
+			self.ui.StartButton.setEnabled(False)
+			port = int(port)
+			self.stask = ServerTask(ip,port)
+			self.stask.start()
+			self.mp = MP()
+			self.mp.start()
+			if self.stask.status:
+				self.WriteMessage("伺服器啟動")
+		else:
+			self.WriteMessage("Port輸入錯誤")
 
 	def StopButton_Clicked(self):
 		self.stask.stop()
 		self.mp.stop()
+
+		if not self.stask.status:
+			self.ui.StartButton.setEnabled(True)
+			self.ui.StopButton.setEnabled(False)
+			self.WriteMessage("伺服器關閉")
+
+	def WriteMessage(self,msg):
+		temp = self.ui.SStextEdit.toPlainText()
+		self.ui.SStextEdit.setText(temp + datetime.datetime.now().strftime("[%Y/%m/%d %H:%M:%S]  ") + msg + "\n")
+		self.ui.SStextEdit.moveCursor(QtGui.QTextCursor.End)
 
 
 app = QApplication(sys.argv)
