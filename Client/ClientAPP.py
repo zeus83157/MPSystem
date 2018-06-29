@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QDialog, QApplication
 from ClientUI import Ui_Form
 import socket
 import threading
-import json
 from bs4 import BeautifulSoup
 import requests
 
