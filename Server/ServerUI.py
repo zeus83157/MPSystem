@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(649, 308)
+        Form.resize(649, 421)
         self.tabWidget = QtWidgets.QTabWidget(Form)
         self.tabWidget.setGeometry(QtCore.QRect(10, 10, 631, 291))
         font = QtGui.QFont()
@@ -52,11 +52,6 @@ class Ui_Form(object):
         self.StopButton.setEnabled(False)
         self.StopButton.setObjectName("StopButton")
         self.verticalLayout.addWidget(self.StopButton)
-        self.SStextEdit = QtWidgets.QTextEdit(self.verticalLayoutWidget)
-        self.SStextEdit.setEnabled(True)
-        self.SStextEdit.setReadOnly(True)
-        self.SStextEdit.setObjectName("SStextEdit")
-        self.verticalLayout.addWidget(self.SStextEdit)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -140,9 +135,14 @@ class Ui_Form(object):
         self.horizontalLayout_9.addLayout(self.verticalLayout_6)
         self.verticalLayout_3.addLayout(self.horizontalLayout_9)
         self.tabWidget.addTab(self.tab_3, "")
+        self.SStextEdit = QtWidgets.QTextEdit(Form)
+        self.SStextEdit.setEnabled(True)
+        self.SStextEdit.setGeometry(QtCore.QRect(10, 310, 631, 103))
+        self.SStextEdit.setReadOnly(True)
+        self.SStextEdit.setObjectName("SStextEdit")
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
