@@ -9,8 +9,10 @@ import vlc
 import time
 import datetime
 
-global urllist
+global urllist,wiplist,ipmstatus
 urllist = []
+wiplist = []
+ipmstatus = False
 
 class ServerTask (threading.Thread):
 	def __init__(self, ip, port):
@@ -23,6 +25,9 @@ class ServerTask (threading.Thread):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.bind((self.ip, self.port))
 		s.listen(1)
+
+		global wiplist,ipmstatus
+
 		while True:
 			if not self.status:
 				break
@@ -32,11 +37,15 @@ class ServerTask (threading.Thread):
 				if not self.status:
 					break
 				data = conn.recv(1024)
-				if (not data): 
+				if not data: 
 					break
 				data = str(data, encoding = "utf-8")
-				self.AddSong(data)
-				conn.send(bytes("Success！", encoding = "utf8"))
+				if not ipmstatus or addr[0] in wiplist:
+					self.AddSong(data)
+					conn.send(bytes("Success！", encoding = "utf8"))
+				else:
+					conn.send(bytes("Server IP管理功能已啟動\n您的IP不在Server白名單\n請與Server端聯繫", encoding = "utf8"))
+
 		s.shutdown(2)
 		s.close()
 		
@@ -44,7 +53,6 @@ class ServerTask (threading.Thread):
 		self.status = False
 		
 	def AddSong(self,url):
-
 		global urllist
 		video = pafy.new(url)
 		best = video.getbest()
@@ -62,8 +70,8 @@ class MP(threading.Thread):
 	def run(self):
 		global urllist
 		while self.status:
-			if(len(urllist) > 0):
-				if(self.player.get_state() == vlc.State.NothingSpecial or self.player.get_state() == vlc.State.Ended):
+			if len(urllist) > 0:
+				if self.player.get_state() == vlc.State.NothingSpecial or self.player.get_state() == vlc.State.Ended:
 					if self.player.get_state() == vlc.State.Ended:
 						self.player.stop()
 					Instance = vlc.Instance()
@@ -84,7 +92,7 @@ class MP(threading.Thread):
 
 class AppWindow(QDialog):
 	def __init__(self):
-
+		
 		super().__init__()
 		self.ui = Ui_Form()
 		self.ui.setupUi(self)
@@ -92,6 +100,7 @@ class AppWindow(QDialog):
 		self.ui.IPlineEdit.setText(self.GetIp())
 		self.ui.StartButton.clicked.connect(self.StartButton_Clicked)
 		self.ui.StopButton.clicked.connect(self.StopButton_Clicked)
+		self.ui.EradioButton.toggled.connect(self.EDradioButton_Toggled)
 
 		self.show()
 
@@ -134,6 +143,36 @@ class AppWindow(QDialog):
 		temp = self.ui.SStextEdit.toPlainText()
 		self.ui.SStextEdit.setText(temp + datetime.datetime.now().strftime("[%Y/%m/%d %H:%M:%S]  ") + msg + "\n")
 		self.ui.SStextEdit.moveCursor(QtGui.QTextCursor.End)
+
+	def EDradioButton_Toggled(self):
+		global ipmstatus,wiplist
+		if self.ui.EradioButton.isChecked():
+			self.WriteMessage("IP管理已啟用")
+			self.ui.TarIPlineEdit.setEnabled(True)
+			self.ui.IIPpushButton.setEnabled(True)
+			self.ui.WlistWidget.setEnabled(True)
+			self.ui.DIPpushButton.setEnabled(True)
+
+			ipmstatus = True
+
+			self.ui.WlistWidget.clear()
+			self.ui.WlistWidget.addItems(wiplist)
+
+
+		if self.ui.DradioButton.isChecked():
+			self.WriteMessage("IP管理已停用")
+			self.ui.TarIPlineEdit.setEnabled(False)
+			self.ui.IIPpushButton.setEnabled(False)
+			self.ui.WlistWidget.setEnabled(False)
+			self.ui.DIPpushButton.setEnabled(False)
+
+			ipmstatus = False
+
+	# def CleanIPM(self):
+	# 	self.ui.TarIPlineEdit.seText("")
+	# 	self.ui.WlistWidget.seText("")
+
+
 
 
 app = QApplication(sys.argv)
