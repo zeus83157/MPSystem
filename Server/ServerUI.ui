@@ -123,14 +123,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit">
+         <widget class="QLineEdit" name="TarIPlineEdit">
           <property name="enabled">
            <bool>false</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="IIPpushButton">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -151,14 +151,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="listWidget">
+         <widget class="QListWidget" name="WlistWidget">
           <property name="enabled">
            <bool>false</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="DIPpushButton">
           <property name="enabled">
            <bool>false</bool>
           </property>
