@@ -98,10 +98,10 @@ class Ui_Form(object):
         self.groupBox.setGeometry(QtCore.QRect(10, 10, 281, 71))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
-        self.DradioButton_2 = QtWidgets.QRadioButton(self.groupBox)
-        self.DradioButton_2.setGeometry(QtCore.QRect(10, 20, 83, 31))
-        self.DradioButton_2.setChecked(True)
-        self.DradioButton_2.setObjectName("DradioButton_2")
+        self.DradioButton = QtWidgets.QRadioButton(self.groupBox)
+        self.DradioButton.setGeometry(QtCore.QRect(10, 20, 83, 31))
+        self.DradioButton.setChecked(True)
+        self.DradioButton.setObjectName("DradioButton")
         self.EradioButton = QtWidgets.QRadioButton(self.groupBox)
         self.EradioButton.setGeometry(QtCore.QRect(130, 20, 83, 31))
         self.EradioButton.setObjectName("EradioButton")
@@ -142,7 +142,7 @@ class Ui_Form(object):
         self.tabWidget.addTab(self.tab_3, "")
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -157,7 +157,7 @@ class Ui_Form(object):
         self.pushButton.setText(_translate("Form", "加入"))
         self.label_4.setText(_translate("Form", "白名單："))
         self.pushButton_2.setText(_translate("Form", "移除"))
-        self.DradioButton_2.setText(_translate("Form", "停用"))
+        self.DradioButton.setText(_translate("Form", "停用"))
         self.EradioButton.setText(_translate("Form", "啟用"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Form", "IP管理"))
         self.label_6.setText(_translate("Form", "現在播放："))
