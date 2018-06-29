@@ -21,7 +21,6 @@ class ClientTask(threading.Thread):
 
 			songname = self.GetSongName(self.url)
 			jsonstr = self.TransTOJsonStr(self.url,songname)
-			print(jsonstr)
 
 			cmd = jsonstr
 			s.send(bytes(cmd, encoding = "utf8"))
