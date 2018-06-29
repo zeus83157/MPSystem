@@ -8,6 +8,7 @@ import pafy
 import vlc
 import time
 import datetime
+import json
 
 global urllist,wiplist,ipmstatus
 urllist = []
@@ -37,12 +38,19 @@ class ServerTask (threading.Thread):
 				if not self.status:
 					break
 				data = conn.recv(1024)
+				
+
 				if not data: 
 					break
 				data = str(data, encoding = "utf-8")
+
 				if not ipmstatus or addr[0] in wiplist:
-					self.AddSong(data)
+					data = data.replace("\n", "");
+					data = json.loads(data)
+					self.AddSong(data["url"])
 					conn.send(bytes("Success！", encoding = "utf8"))
+				
+
 				else:
 					conn.send(bytes("Server IP管理功能已啟動\n您的IP不在Server白名單\n請與Server端聯繫", encoding = "utf8"))
 
