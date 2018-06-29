@@ -101,6 +101,7 @@ class AppWindow(QDialog):
 		self.ui.StartButton.clicked.connect(self.StartButton_Clicked)
 		self.ui.StopButton.clicked.connect(self.StopButton_Clicked)
 		self.ui.EradioButton.toggled.connect(self.EDradioButton_Toggled)
+		self.ui.IIPpushButton.clicked.connect(self.IIPpushButton_Clicked)
 
 		self.show()
 
@@ -155,8 +156,7 @@ class AppWindow(QDialog):
 
 			ipmstatus = True
 
-			self.ui.WlistWidget.clear()
-			self.ui.WlistWidget.addItems(wiplist)
+			self.ReloadIPList()
 
 
 		if self.ui.DradioButton.isChecked():
@@ -168,9 +168,16 @@ class AppWindow(QDialog):
 
 			ipmstatus = False
 
-	# def CleanIPM(self):
-	# 	self.ui.TarIPlineEdit.seText("")
-	# 	self.ui.WlistWidget.seText("")
+	def ReloadIPList(self):
+		self.ui.WlistWidget.clear()
+		self.ui.WlistWidget.addItems(wiplist)
+
+	def IIPpushButton_Clicked(self):
+		global wiplist
+		targetIP = self.ui.TarIPlineEdit.text()
+		if not targetIP in wiplist:
+			wiplist.append(targetIP)
+			self.ReloadIPList()
 
 
 
