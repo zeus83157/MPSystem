@@ -82,6 +82,7 @@ class Ui_Form(object):
         self.horizontalLayout_4.addWidget(self.label_4)
         self.WlistWidget = QtWidgets.QListWidget(self.verticalLayoutWidget_2)
         self.WlistWidget.setEnabled(False)
+        self.WlistWidget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
         self.WlistWidget.setObjectName("WlistWidget")
         self.horizontalLayout_4.addWidget(self.WlistWidget)
         self.DIPpushButton = QtWidgets.QPushButton(self.verticalLayoutWidget_2)

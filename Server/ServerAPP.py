@@ -102,6 +102,7 @@ class AppWindow(QDialog):
 		self.ui.StopButton.clicked.connect(self.StopButton_Clicked)
 		self.ui.EradioButton.toggled.connect(self.EDradioButton_Toggled)
 		self.ui.IIPpushButton.clicked.connect(self.IIPpushButton_Clicked)
+		self.ui.DIPpushButton.clicked.connect(self.DIPpushButton_Clicked)
 
 		self.show()
 
@@ -177,7 +178,16 @@ class AppWindow(QDialog):
 		targetIP = self.ui.TarIPlineEdit.text()
 		if not targetIP in wiplist:
 			wiplist.append(targetIP)
+			self.WriteMessage("白名單加入" + targetIP)
 			self.ReloadIPList()
+
+	def DIPpushButton_Clicked(self):
+		global wiplist
+		listItems = self.ui.WlistWidget.selectedItems()     
+		for item in listItems:
+			wiplist.remove(item.text())
+			self.ui.WlistWidget.takeItem(self.ui.WlistWidget.row(item))
+			self.WriteMessage("白名單移除" + item.text())
 
 
 

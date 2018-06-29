@@ -155,6 +155,9 @@
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::MultiSelection</enum>
+          </property>
          </widget>
         </item>
         <item>
