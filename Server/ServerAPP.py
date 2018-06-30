@@ -10,9 +10,10 @@ import time
 import datetime
 import json
 
-global urllist,wiplist,ipmstatus
+global urllist, wiplist, ipmstatus, songnamelist, w
 urllist = []
 wiplist = []
+songnamelist = []
 ipmstatus = False
 
 class ServerTask (threading.Thread):
@@ -47,7 +48,7 @@ class ServerTask (threading.Thread):
 				if not ipmstatus or addr[0] in wiplist:
 					data = data.replace("\n", "");
 					data = json.loads(data)
-					self.AddSong(data["url"])
+					self.AddSong(data["url"],data["songname"])
 					conn.send(bytes("Success！", encoding = "utf8"))
 				
 
@@ -60,13 +61,17 @@ class ServerTask (threading.Thread):
 	def stop(self):
 		self.status = False
 		
-	def AddSong(self,url):
-		global urllist
+	def AddSong(self,url,songname):
+		global urllist,songnamelist
 		video = pafy.new(url)
 		best = video.getbest()
 		playurl = best.url
 		urllist.append(playurl)
-		print(len(urllist))
+		songnamelist.append(songname)
+
+
+		w.ui.WTPlistWidget.clear()
+		w.ui.WTPlistWidget.addItems(songnamelist)
 
 class MP(threading.Thread):
 	def __init__(self):
@@ -76,7 +81,7 @@ class MP(threading.Thread):
 		self.player = Instance.media_player_new()
 
 	def run(self):
-		global urllist
+		global urllist,songnamelist
 		while self.status:
 			if len(urllist) > 0:
 				if self.player.get_state() == vlc.State.NothingSpecial or self.player.get_state() == vlc.State.Ended:
@@ -89,8 +94,15 @@ class MP(threading.Thread):
 					Media.get_mrl()
 					self.player.set_media(Media)
 					self.player.play()
+
+					songname = songnamelist.pop(0)
+					w.ui.CurrentSonglineEdit.setText(songname)
+					w.ui.WTPlistWidget.clear()
+					w.ui.WTPlistWidget.addItems(songnamelist)
+
 					time.sleep(5)
 		urllist.clear()
+		songnamelist.clear()
 
 	def stop(self):
 		self.player.stop()
