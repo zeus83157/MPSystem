@@ -107,6 +107,9 @@ class MP(threading.Thread):
 	def stop(self):
 		self.player.stop()
 		self.status = False
+
+		w.ui.WTPlistWidget.clear()
+		w.ui.CurrentSonglineEdit.setText("")
 			
 		
 
