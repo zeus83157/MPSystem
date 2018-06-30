@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>621</width>
-    <height>227</height>
+    <height>162</height>
    </rect>
   </property>
   <property name="font">
@@ -25,7 +25,7 @@
      <x>10</x>
      <y>10</y>
      <width>601</width>
-     <height>208</height>
+     <height>141</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -77,16 +77,6 @@
      <widget class="QPushButton" name="SubmitButton">
       <property name="text">
        <string>Submit</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QTextEdit" name="CStextEdit">
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei</family>
-        <pointsize>9</pointsize>
-       </font>
       </property>
      </widget>
     </item>

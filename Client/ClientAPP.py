@@ -8,7 +8,7 @@ import requests
 
 
 class ClientTask(threading.Thread):
-	def __init__(self, ip,port,url):
+	def __init__(self, ip, port, url):
 		threading.Thread.__init__(self)
 		self.ip = ip
 		self.port = port
@@ -61,7 +61,7 @@ class AppWindow(QDialog):
 		port = int(self.ui.PortlineEdit.text())
 		url = self.ui.UrllineEdit.text()
 
-		ctask = ClientTask(ip,port,url)
+		ctask = ClientTask(ip, port, url)
 		ctask.start()
 
 app = QApplication(sys.argv)
