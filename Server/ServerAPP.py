@@ -16,6 +16,7 @@ wiplist = []
 songnamelist = []
 ipmstatus = False
 
+
 class ServerTask (threading.Thread):
 	def __init__(self, ip, port):
 		threading.Thread.__init__(self)
@@ -46,7 +47,7 @@ class ServerTask (threading.Thread):
 				data = str(data, encoding = "utf-8")
 
 				if not ipmstatus or addr[0] in wiplist:
-					data = data.replace("\n", "");
+					data = data.replace("\n", "")
 					data = json.loads(data)
 					self.AddSong(data["url"],data["songname"])
 					conn.send(bytes("Success！", encoding = "utf8"))
@@ -70,8 +71,7 @@ class ServerTask (threading.Thread):
 		songnamelist.append(songname)
 
 
-		w.ui.WTPlistWidget.clear()
-		w.ui.WTPlistWidget.addItems(songnamelist)
+		w.ReloadSnogList()
 
 class MP(threading.Thread):
 	def __init__(self):
@@ -97,8 +97,7 @@ class MP(threading.Thread):
 
 					songname = songnamelist.pop(0)
 					w.ui.CurrentSonglineEdit.setText(songname)
-					w.ui.WTPlistWidget.clear()
-					w.ui.WTPlistWidget.addItems(songnamelist)
+					w.ReloadSnogList()
 
 					time.sleep(5)
 		urllist.clear()
@@ -126,6 +125,7 @@ class AppWindow(QDialog):
 		self.ui.EradioButton.toggled.connect(self.EDradioButton_Toggled)
 		self.ui.IIPpushButton.clicked.connect(self.IIPpushButton_Clicked)
 		self.ui.DIPpushButton.clicked.connect(self.DIPpushButton_Clicked)
+		self.ui.DSongpushButton.clicked.connect(self.DSongpushButton_Clicked)
 
 		self.show()
 
@@ -212,6 +212,20 @@ class AppWindow(QDialog):
 			self.ui.WlistWidget.takeItem(self.ui.WlistWidget.row(item))
 			self.WriteMessage("白名單移除" + item.text())
 
+	def ReloadSnogList(self):
+		global songnamelist
+		self.ui.WTPlistWidget.clear()
+		self.ui.WTPlistWidget.addItems(songnamelist)
+
+	def DSongpushButton_Clicked(self):
+		global songnamelist,urllist
+		if len(self.ui.WTPlistWidget.selectedItems()) > 0:
+			cselected = self.ui.WTPlistWidget.currentItem().text()
+			cindex = songnamelist.index(cselected)
+			del urllist[cindex]
+			del songnamelist[cindex]
+
+		self.ReloadSnogList()
 
 
 
