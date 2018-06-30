@@ -127,7 +127,7 @@ class Ui_Form(object):
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
         self.WTPlistWidget = QtWidgets.QListWidget(self.verticalLayoutWidget_3)
-        self.WTPlistWidget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
+        self.WTPlistWidget.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.WTPlistWidget.setObjectName("WTPlistWidget")
         self.horizontalLayout_9.addWidget(self.WTPlistWidget)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
@@ -145,7 +145,7 @@ class Ui_Form(object):
         self.SStextEdit.setObjectName("SStextEdit")
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
