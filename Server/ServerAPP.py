@@ -48,9 +48,13 @@ class ServerTask (threading.Thread):
 
 				if not ipmstatus or addr[0] in wiplist:
 					data = data.replace("\n", "")
-					data = json.loads(data)
-					self.AddSong(data["url"],data["songname"])
-					conn.send(bytes("Success！", encoding = "utf8"))
+					try:
+						data = json.loads(data)
+					except Exception as e:
+						conn.send(bytes("FAIL！", encoding = "utf8"))
+					else:
+						self.AddSong(data["url"],data["songname"])
+						conn.send(bytes("Success！", encoding = "utf8"))
 				
 
 				else:
