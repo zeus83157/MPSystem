@@ -19,7 +19,7 @@ class ClientTask(threading.Thread):
 			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			s.connect((self.ip, self.port))
 
-			songname = self.GetSongName(self.url)
+			songname = self.GetSongName(self.url).replace("\"","＂")
 			jsonstr = self.TransTOJsonStr(self.url,songname)
 
 			cmd = jsonstr
