@@ -26,8 +26,9 @@ class ServerTask (threading.Thread):
 
 	def run(self):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.bind((self.ip, self.port))
-		s.listen(1)
+		if not s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1):
+			s.bind((self.ip, self.port))
+		s.listen(10)
 
 		global wiplist,ipmstatus
 
@@ -60,8 +61,8 @@ class ServerTask (threading.Thread):
 				else:
 					conn.send(bytes("Server IP管理功能已啟動\n您的IP不在Server白名單\n請與Server端聯繫", encoding = "utf8"))
 
-		s.shutdown(2)
-		s.close()
+		conn.shutdown(2)
+		conn.close()
 		
 	def stop(self):
 		self.status = False
