@@ -3,8 +3,6 @@ from PyQt5.QtWidgets import QDialog, QApplication
 from ClientUI import Ui_Form
 import socket
 import threading
-from bs4 import BeautifulSoup
-import requests
 
 
 class ClientTask(threading.Thread):
@@ -18,11 +16,7 @@ class ClientTask(threading.Thread):
 		try:
 			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			s.connect((self.ip, self.port))
-
-			songname = self.GetSongName(self.url).replace("\"","＂")
-			jsonstr = self.TransTOJsonStr(self.url,songname)
-
-			cmd = jsonstr
+			cmd = self.url
 			s.send(bytes(cmd, encoding = "utf8"))
 			data = s.recv(1024)
 			data = str(data, encoding = "utf-8")
@@ -30,21 +24,6 @@ class ClientTask(threading.Thread):
 			s.close()
 		except Exception as e:
 			print(e)
-
-	def GetSongName(self,url):
-		req = requests.get(url)
-		req.encoding = 'utf-8'
-		if(req.status_code == requests.codes.ok):
-			soup = BeautifulSoup(req.text, 'html.parser')
-			temp = ""
-			for item in soup.select("title"):
-				temp = temp + item.text + "\n"
-			return temp
-
-	def TransTOJsonStr(self,url,songname):
-		jsonstr = '{"url":"' + url + '","songname":"' + songname + '"}'
-		return jsonstr
-		
 
 class AppWindow(QDialog):
 	def __init__(self):

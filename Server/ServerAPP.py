@@ -8,7 +8,6 @@ import pafy
 import vlc
 import time
 import datetime
-import json
 
 global urllist, wiplist, ipmstatus, songnamelist, w, player
 urllist = []
@@ -49,14 +48,8 @@ class ServerTask (threading.Thread):
 
 				if not ipmstatus or addr[0] in wiplist:
 					data = data.replace("\n", "")
-					try:
-						data = json.loads(data)
-					except Exception as e:
-						conn.send(bytes("FAIL！", encoding = "utf8"))
-					else:
-						self.AddSong(data["url"],data["songname"])
-						conn.send(bytes("Success！", encoding = "utf8"))
-				
+					self.AddSong(data)
+					conn.send(bytes("Success！", encoding = "utf8"))
 
 				else:
 					conn.send(bytes("Server IP管理功能已啟動\n您的IP不在Server白名單\n請與Server端聯繫", encoding = "utf8"))
@@ -67,9 +60,10 @@ class ServerTask (threading.Thread):
 	def stop(self):
 		self.status = False
 		
-	def AddSong(self,url,songname):
+	def AddSong(self,url):
 		global urllist,songnamelist
 		video = pafy.new(url)
+		songname = video.title
 		best = video.getbest()
 		playurl = best.url
 		urllist.append(playurl)
