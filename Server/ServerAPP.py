@@ -10,7 +10,7 @@ import time
 import datetime
 import json
 
-global urllist, wiplist, ipmstatus, songnamelist, w
+global urllist, wiplist, ipmstatus, songnamelist, w, player
 urllist = []
 wiplist = []
 songnamelist = []
@@ -80,25 +80,26 @@ class ServerTask (threading.Thread):
 
 class MP(threading.Thread):
 	def __init__(self):
+		global player
 		threading.Thread.__init__(self)
 		self.status = True
 		Instance = vlc.Instance()
-		self.player = Instance.media_player_new()
+		player = Instance.media_player_new()
 
 	def run(self):
-		global urllist,songnamelist
+		global urllist, songnamelist, player
 		while self.status:
 			if len(urllist) > 0:
-				if self.player.get_state() == vlc.State.NothingSpecial or self.player.get_state() == vlc.State.Ended:
-					if self.player.get_state() == vlc.State.Ended:
-						self.player.stop()
+				if player.get_state() == vlc.State.NothingSpecial or player.get_state() == vlc.State.Ended:
+					if player.get_state() == vlc.State.Ended:
+						player.stop()
 					Instance = vlc.Instance()
-					self.player = Instance.media_player_new()
+					player = Instance.media_player_new()
 					url = urllist.pop(0)
 					Media = Instance.media_new(url)
 					Media.get_mrl()
-					self.player.set_media(Media)
-					self.player.play()
+					player.set_media(Media)
+					player.play()
 
 					songname = songnamelist.pop(0)
 					w.ui.CurrentSonglineEdit.setText(songname)
@@ -109,7 +110,8 @@ class MP(threading.Thread):
 		songnamelist.clear()
 
 	def stop(self):
-		self.player.stop()
+		global player
+		player.stop()
 		self.status = False
 
 		w.ui.WTPlistWidget.clear()
@@ -131,6 +133,8 @@ class AppWindow(QDialog):
 		self.ui.IIPpushButton.clicked.connect(self.IIPpushButton_Clicked)
 		self.ui.DIPpushButton.clicked.connect(self.DIPpushButton_Clicked)
 		self.ui.DSongpushButton.clicked.connect(self.DSongpushButton_Clicked)
+		self.ui.PPpushButton.clicked.connect(self.PPpushButton_Clicked)
+		self.ui.NButton.clicked.connect(self.NButton_Clicked)
 
 		self.show()
 
@@ -231,6 +235,19 @@ class AppWindow(QDialog):
 			del songnamelist[cindex]
 
 		self.ReloadSnogList()
+
+	def PPpushButton_Clicked(self):
+		print(player.get_state())
+		if player.get_state() == vlc.State.Playing:
+			while player.get_state() == vlc.State.Playing:
+				player.pause()
+		elif player.get_state() == vlc.State.Paused:
+			while player.get_state() == vlc.State.Paused:
+				player.play()
+
+	def NButton_Clicked(self):
+		pass
+
 
 
 
