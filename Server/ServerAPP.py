@@ -247,7 +247,6 @@ class AppWindow(QDialog):
 				player.play()
 
 	def NButton_Clicked(self):
-		player.set_time(player.get_length())
 		player.set_position(1.0)
 
 
