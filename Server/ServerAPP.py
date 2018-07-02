@@ -237,16 +237,18 @@ class AppWindow(QDialog):
 		self.ReloadSnogList()
 
 	def PPpushButton_Clicked(self):
-		print(player.get_state())
 		if player.get_state() == vlc.State.Playing:
+			self.ui.PPpushButton.setText("►")
 			while player.get_state() == vlc.State.Playing:
 				player.pause()
 		elif player.get_state() == vlc.State.Paused:
+			self.ui.PPpushButton.setText("▊▊")
 			while player.get_state() == vlc.State.Paused:
 				player.play()
 
 	def NButton_Clicked(self):
-		pass
+		player.set_time(player.get_length())
+		player.set_position(1.0)
 
 
 
